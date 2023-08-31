@@ -1,2 +1,2 @@
-# AllForgeVersions
+# All Forge Versions
 a python script to download all forge versions, if you want it for some reason
