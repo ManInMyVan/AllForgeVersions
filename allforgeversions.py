@@ -11,14 +11,12 @@ page = BeautifulSoup(requests.get('https://files.minecraftforge.net/net/minecraf
 for link in page:
 	if link.get('href') and link.get('href').endswith('html') and link.get('href').startswith('index'):
 		urls.append('https://files.minecraftforge.net/net/minecraftforge/forge/'+link.get('href'))
-	if link.get('href') and link.get('href').endswith('html') and link.get('href').startswith('index'):
 		versions.append(link.get('href').replace('.html', '').replace('index_', ''))
 page = BeautifulSoup(requests.get(urls[0]).content, "html.parser").find_all("a")
 #	Get the latest version, since the selected one is not a link
 for link in page:
 	if link.get('href') and link.get('href').endswith('html') and link.get('href').startswith('index'):
 		urls.append('https://files.minecraftforge.net/net/minecraftforge/forge/'+link.get('href'))
-	if link.get('href') and link.get('href').endswith('html') and link.get('href').startswith('index'):
 		versions.append(link.get('href').replace('.html', '').replace('index_', ''))
 #	Deduplicate the lists
 versions = list(dict.fromkeys(versions))
