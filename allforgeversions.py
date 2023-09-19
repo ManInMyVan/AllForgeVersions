@@ -24,28 +24,26 @@ versions.insert(0, versions.pop())
 urls = list(dict.fromkeys(urls))
 urls.insert(0, urls.pop())
 versions_time=time.time()
-print('Versions (%d): %s\nDone, took %.3f seconds.\nGetting download links... (This may take a while.)' % (len(versions),str(versions).removeprefix('[').removesuffix(']').replace("'",''),versions_time-start_time))
+print('Versions (%d): %s\nDone, took %.3f seconds.\nGetting download links...' % (len(versions),str(versions).removeprefix('[').removesuffix(']').replace("'",''),versions_time-start_time))
 for url in urls:
 	page = BeautifulSoup(requests.get(url).content, "html.parser").find_all("a")
 	for link in page:
 		if link.get('href') and link.get('href').endswith('.jar'):
 			links.append(link.get('href'))
-print('Found %d links in %.3f seconds.' % (len(links), time.time()-versions_time))
-DoDownload=input('Would you like to download the files? y/n\n')
-if DoDownload == 'y':
-	while True:
-		directory=input('Please specify a directory to download to.\n')
-		try:
-			open(directory+'\\'+links[0].split('/')[7], 'wb')
-		except FileNotFoundError:
-			print('That directory is not valid, please try again.')
-		else:
-			print('Downloading files...')
-			download_time=time.time()
-			break
-	for link in links:
-			download=requests.get(link, allow_redirects=True)
-			open(directory+'\\'+link.split('/')[7], 'wb').write(download.content)
-			files+=1
-	print('Downloaded %d files in %.3f seconds.' % (files, time.time()-download_time))
-	print('Proccess finished in %.3f seconds.' % time.time()-start_time)
+print('Found %d links in %.3f seconds.\nPlease specify a directory to download to.' % (len(links), time.time()-versions_time))
+while True:
+	directory=input('\n')
+	try:
+		open(directory+'\\'+links[0].split('/')[7], 'wb')
+	except FileNotFoundError:
+		print('That directory is not valid or does not exist, please try again.')
+	else:
+		print('Downloading files...')
+		download_time=time.time()
+		break
+for link in links:
+		download=requests.get(link, allow_redirects=True)
+		open(directory+'\\'+link.split('/')[7], 'wb').write(download.content)
+		files+=1
+print('Downloaded %d files in %.3f seconds.' % (files, time.time()-download_time))
+print('Proccess finished in %.3f seconds.' % time.time()-start_time)
